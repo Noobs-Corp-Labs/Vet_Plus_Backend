@@ -11,4 +11,4 @@ class User(BaseModel):
     updated_at: str | None = None
 
     class Config:
-        orm_mode = True
+        from_attributes = True

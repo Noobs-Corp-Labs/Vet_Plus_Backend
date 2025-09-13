@@ -1,13 +1,14 @@
-from pydantic import BaseSettings
+from pydantic_settings import BaseSettings
 from typing import Optional
 
 class Settings(BaseSettings):
-    # Server
-    root_path: Optional[str] = None
+    # FastAPI
     swagger_servers_list: Optional[str] = None
-    secret_key: str = '47dcffaa-7288-4669-ad67-f8399bc06b23'
-    algorithm: str = 'HS256'
-    access_token_expire_minutes: int = 30
+
+    # Server
+    secret_key: str
+    algorithm: str
+    access_token_expire_minutes: int
 
     # MongoDB
     mongodb_host: str

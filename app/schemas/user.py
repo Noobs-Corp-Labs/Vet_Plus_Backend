@@ -32,9 +32,11 @@ class UserUpdate(BaseModel):
             raise ValueError('Password must include an uppercase letter')
         return ValueError('Password must include an uppercase letter')
 
-class UserResponse(User):
-    class Config(User.Config):
-        # quando usar .dict() ou FastAPI para serializar, exclui automaticamente
-        fields = {
-            'hashed_password': {'exclude': True}
-        }
+class UserResponse(BaseModel):
+    id: str
+    email: str
+    name: str
+    is_active: bool
+    is_admin: bool
+    created_at: str | None = None
+    updated_at: str | None = None
