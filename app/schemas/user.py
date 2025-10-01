@@ -1,4 +1,4 @@
-from pydantic import BaseModel, EmailStr, Field, validator
+from pydantic import BaseModel, EmailStr, Field, field_validator
 from typing import Optional
 
 from app.models.user import User
@@ -8,7 +8,7 @@ class UserCreate(BaseModel):
     name: str = Field(..., min_length=2, max_length=50)
     password: str = Field(..., min_length=8)
 
-    @validator('password')
+    @field_validator('password')
     def validate_password(cls, v):
         if not any(c.isdigit() for c in v):
             raise ValueError('Password must include a digit')
@@ -22,7 +22,7 @@ class UserUpdate(BaseModel):
     name: Optional[str] = Field(None, min_length=2, max_length=50)
     password: Optional[str] = Field(None, min_length=8)
 
-    @validator('password')
+    @field_validator('password')
     def validate_password(cls, v):
         if v is None:
             return v

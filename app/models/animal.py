@@ -2,8 +2,6 @@ from datetime import date
 from enum import Enum
 from pydantic import BaseModel
 
-from Backend.app.models.raca import Breed
-
 class AnimalStatus(Enum):
     AVAILABLE = 0
     LACTATING = 1
@@ -13,7 +11,7 @@ class AnimalStatus(Enum):
 class Animal(BaseModel):
     id: str
     ear_tag: str
-    breed: Breed
+    breed_id: str
     name: str
     description: str
     birth_date: date
