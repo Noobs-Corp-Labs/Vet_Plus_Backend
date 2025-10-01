@@ -1,8 +1,8 @@
 from datetime import date
 from pydantic import BaseModel, Field, field_validator
 
-from Backend.app.models.raca import Breed
-from Backend.app.models.animal import AnimalStatus
+from Backend.app.models.breeds import Breed
+from Backend.app.models.animals import AnimalStatus
 
 class AnimalCreate(BaseModel):
     ear_tag: str = Field(

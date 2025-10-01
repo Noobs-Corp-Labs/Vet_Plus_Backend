@@ -1,6 +1,6 @@
 from fastapi import APIRouter, HTTPException, status
-from app.schemas.user import UserCreate, UserResponse, UserUpdate
-from app.crud.user import create_user, get_user_by_email, get_users, get_user, update_user, delete_user
+from Backend.app.schemas.users import UserCreate, UserResponse, UserUpdate
+from Backend.app.crud.users import create_user, get_user_by_email, get_users, get_user, update_user, delete_user
 
 router = APIRouter()
 
