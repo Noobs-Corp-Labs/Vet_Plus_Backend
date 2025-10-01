@@ -98,7 +98,7 @@ class AnimalCreate(BaseModel):
             "examples": [
                 {
                     "ear_tag": "BR123456",
-                    "breed": "Holstein",
+                    "breed_id": "507f1f77bcf86cd799439011",
                     "name": "Mimosa",
                     "description": "Animal de alta produção leiteira",
                     "birth_date": "2022-03-15",
