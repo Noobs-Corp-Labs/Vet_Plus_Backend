@@ -45,3 +45,46 @@ Essa lógica não deveria estar nem no api (que só roteia) nem no crud (que só
 - _models_ → descreve os dados no banco
 
 É um padrão chamado de camadas (layered architecture) → ajuda a manter o código limpo, testável e escalável.
+
+```
+vet_plus_backend/
+├── app/
+│   ├── __init__.py
+│   ├── main.py
+│   ├── config.py
+│   ├── database.py
+│   │
+│   ├── api/                 ← Endpoints/rotas
+│   │   ├── __init__.py
+│   │   ├── users.py
+│   │   ├── animals.py
+│   │   └── auth.py
+│   │
+│   ├── crud/                ← Operações de banco
+│   │   ├── __init__.py
+│   │   ├── users.py
+│   │   └── animals.py
+│   │
+│   ├── models/              ← Estrutura dos dados
+│   │   ├── __init__.py
+│   │   ├── users.py
+│   │   ├── animals.py
+│   │   └── appointment.py
+│   │
+│   ├── schemas/             ← Validação API (Pydantic)
+│   │   ├── __init__.py
+│   │   ├── users.py
+│   │   └── animals.py
+│   │
+│   ├── services/            ← Lógica de negócio
+│   │   ├── __init__.py
+│   │   ├── user_service.py
+│   │   └── animal_service.py
+│   │
+│   ├── core/            ← core functions
+│   │   ├── __init__.py
+│   │   └── db_setup.py
+│
+├── requirements.txt
+└── .env
+```

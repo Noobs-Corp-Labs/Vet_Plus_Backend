@@ -1,7 +1,20 @@
+from contextlib import asynccontextmanager
 from fastapi import FastAPI
+from app.core.database.database_init import init_collections
 from app.api import api_router
 from app.middleware import add_middlewares
 from app.config import settings
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    """
+    Gerencia o ciclo de vida da aplicação.
+    """
+    # Startup
+    print("🚀 Iniciando aplicação...")
+    await init_collections()
+    
+    yield
 
 app = FastAPI(
     title="Vet Plus Backend",
@@ -12,6 +25,7 @@ API do **Vet Plus**, sistema para gestão, análise de saúde e produção de re
     docs_url="/docs",
     redoc_url="/redoc",
     openapi_url="/openapi.json",
+    lifespan=lifespan
 )
 add_middlewares(app)
 
