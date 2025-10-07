@@ -11,4 +11,10 @@ class User(BaseModel):
     updated_at: str | None = None
 
     class Config:
-        from_attributes = True
+        collection = "users"
+        indexes = [
+            {"keys": [("email", 1)], "unique": True},
+            {"keys": [("is_active", 1)]},
+            {"keys": [("created_at", -1)]},
+            {"keys": [("is_admin", 1), ("is_active", 1)]},
+        ]

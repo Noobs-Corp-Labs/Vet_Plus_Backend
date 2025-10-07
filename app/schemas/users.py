@@ -1,7 +1,7 @@
 from pydantic import BaseModel, EmailStr, Field, field_validator
 from typing import Optional
 
-from Backend.app.models.users import User
+from app.models.users import User
 
 class UserCreate(BaseModel):
     email: EmailStr

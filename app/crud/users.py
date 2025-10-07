@@ -1,7 +1,7 @@
 from datetime import datetime
 from bson import ObjectId
-from Backend.app.models.users import User
-from Backend.app.schemas.users import UserCreate, UserUpdate
+from app.models.users import User
+from app.schemas.users import UserCreate, UserUpdate
 from app.services.auth import get_password_hash
 from app.database import mongo_database_con
 

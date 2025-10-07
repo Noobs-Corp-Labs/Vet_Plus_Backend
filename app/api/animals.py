@@ -1,5 +1,5 @@
 from fastapi import APIRouter
-from Backend.app.schemas.animals import AnimalCreate, AnimalResponse
+from app.schemas.animals import AnimalCreate, AnimalResponse
 
 router = APIRouter()
 
