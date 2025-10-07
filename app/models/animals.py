@@ -2,11 +2,17 @@ from datetime import date
 from enum import Enum
 from pydantic import BaseModel, Field
 
-class AnimalStatus(Enum):
-    AVAILABLE = 0
-    LACTATING = 1
-    PREGNANT = 2
-    INSEMINATED = 3
+class AnimalGender(str, Enum):
+    MALE = "Macho"
+    FEMALE = "Femea"
+    UNKNOWN = "Desconhecido"
+
+class AnimalStatus(str, Enum):
+    AVAILABLE = "Disponivel"
+    LACTATING = "Lactante"
+    PREGNANT = "Gravida"
+    INSEMINATED = "Inseminada"
+    END_OF_LIFE = "Fim da Vida"
 
 class Animal(BaseModel):
     id: str | None = Field(None, alias="_id")
@@ -15,11 +21,12 @@ class Animal(BaseModel):
     name: str
     description: str
     birth_date: date
-    status: AnimalStatus
+    weight: float
+    gender: AnimalGender = AnimalGender.UNKNOWN
+    status: AnimalStatus = AnimalStatus.AVAILABLE
 
     class Config:
         collection = "animals"
-        json_encoders = {Enum: lambda e: e.name}
         indexes = [
             {"keys": [("ear_tag", 1)], "unique": True},
             {"keys": [("breed_id", 1)]},
