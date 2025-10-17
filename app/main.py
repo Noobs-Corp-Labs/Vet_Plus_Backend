@@ -12,7 +12,7 @@ async def lifespan(app: FastAPI):
     """
     # Startup
     print("🚀 Iniciando aplicação...")
-    await init_collections()
+    await init_collections(False)
     
     yield
 
