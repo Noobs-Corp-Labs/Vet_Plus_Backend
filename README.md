@@ -28,9 +28,9 @@ run the development server:
 fastapi dev app/main.py
 ```
 
-The API will be available at [http://localhost:3000/api](http://localhost:3000/api).
+The API will be available at [http://localhost:3000/](http://localhost:3000/).
 
-> You can find the docs at [http://localhost:3000/api](http://localhost:3000/api)
+> You can find the docs at [http://localhost:3000/docs](http://localhost:3000/docs)
 
 ## Learn More
 

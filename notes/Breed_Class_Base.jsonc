@@ -1,0 +1,47 @@
+{
+  "_id": "ObjectId",
+  "name": "string",
+  "type": "Enum",                                    // Taurina | Zebuína | Híbrido
+  "predominant_colors": ["string", "string"],        // Lista de Cores
+  "temperament": "Enum",                             // Calmo | Bravo | Quieto | Agitado
+ 
+  "morphology": {
+    "withers_height": { "male": "int", "female": "int" },     // Centímetros
+    "body_length": "int",                                     // Centímetros
+    "average_weight": { "male": "float", "female": "float" }, // Kilogramas
+    "longevity": "int",                                       // Meses
+    "size": "Enum"                                            // Pequeno | Médio | Grande
+  },
+  "production": {
+    "annual_average": "int",                         // Litros
+    "daily_peak": "int",                             // Litros
+    "fat": "float",                                  // Porcentagem
+    "protein": "float",                              // Porcentagem
+    "lactations": "float",                           // Quantidade
+    "lactation_cycle_time": "int"                    // Dias
+  },
+  "reproduction": {
+    "age_first_calving": "int",                      // Meses
+    "calving_interval": "int",                       // Dias
+    "conception_rate": "float",                      // Porcentagem
+    "calving_ease_index": "Enum"                     // Muito Fácil | Fácil | Médio | Difícil | Muito Difícil
+  },
+  "adaptation": {
+    "heat_resistance": "Enum",                       // Muito Baixa | Baixa | Média | Alta | Muito Alta
+    "parasite_resistance": "Enum",                   // Muito Baixa | Baixa | Média | Alta | Muito Alta
+    "stress_resistance": "Enum",                     // Muito Baixa | Baixa | Média | Alta | Muito Alta
+    "ideal_environment": "string/Enum",              // Usar One Hot Encoding?
+    "thermal_sensitivity": "Enum"                    // Baixa | Média | Alta
+  },
+  "health": {
+    "mastitis_incidence": "float",                   // Porcentagem
+    "hoof_problems_incidence": "float",              // Porcentagem
+    "ketosis_susceptibility": "Enum",                // Baixa | Média | Alta
+    "average_scc": "int"                             // Milhares por mL
+  },
+  "efficiency": {
+    "feed_conversion_ratio": "float",                // Kilogramas (Mede quantos Kg são necessários para produzir 1 Litro de Leite)
+    "energy_efficiency": "Enum",                     // Baixa | Média | Alta
+    "maintenance_cost": "Enum"                       // Baixo | Médio | Alto
+  }
+}
