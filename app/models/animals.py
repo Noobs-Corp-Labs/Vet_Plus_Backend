@@ -28,7 +28,11 @@ class Animal(BaseModel):
     class Config:
         collection = "animals"
         indexes = [
-            {"keys": [("ear_tag", 1)], "unique": True},
+            {
+                "keys": [("ear_tag", 1)],
+                "unique": True,
+                "partialFilterExpression": {"ear_tag": {"$type": "string"}},
+            },
             {"keys": [("breed_id", 1)]},
             {"keys": [("status", 1)]}
         ]

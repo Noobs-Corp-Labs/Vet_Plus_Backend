@@ -5,11 +5,10 @@ from app.models.breeds import Breed
 from app.models.animals import AnimalStatus
 
 class AnimalCreate(BaseModel):
-    ear_tag: str = Field(
-        ...,
-        min_length=1,
+    ear_tag: str | None = Field(
+        default=None,
         max_length=50,
-        description="Identificação do brinco do animal"
+        description="Identificação do brinco do animal (pode ser nula)"
     )
     breed_id: str = Field(
         ...,
@@ -43,15 +42,14 @@ class AnimalCreate(BaseModel):
         if not v:
             raise ValueError("Nome não pode ser vazio ou conter apenas espaços")
         return v
-
+    
     @field_validator('ear_tag')
     @classmethod
-    def validate_ear_tag(cls, v: str) -> str:
-        """Valida e limpa o identificador do brinco"""
+    def validate_ear_tag(cls, v: str | None) -> str | None:
+        if v is None:
+            return None
         v = v.strip().upper()
-        if not v:
-            raise ValueError("Brinco não pode ser vazio ou conter apenas espaços")
-        return v
+        return v or None
     
     @field_validator('breed_id')
     @classmethod
@@ -102,15 +100,15 @@ class AnimalCreate(BaseModel):
                     "name": "Mimosa",
                     "description": "Animal de alta produção leiteira",
                     "birth_date": "2022-03-15",
-                    "status": 0
+                    "status": AnimalStatus.AVAILABLE
                 }
             ]
         }
     }
 
 class AnimalResponse(BaseModel):
-    id: str
-    ear_tag: str
+    id: str = Field(..., alias="_id")
+    ear_tag: str | None = None
     breed: Breed
     name: str
     description: str
