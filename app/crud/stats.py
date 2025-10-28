@@ -2,7 +2,7 @@ from datetime import datetime, timedelta
 from app.database import mongo_database_con
 
 async def get_system_stats():
-    now = datetime.utcnow()
+    now = datetime.now(datetime.timezone.utc)
     day_ago = now - timedelta(days=1)
     week_ago = now - timedelta(weeks=1)
     month_ago = now - timedelta(days=30)

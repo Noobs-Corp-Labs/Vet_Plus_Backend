@@ -1,4 +1,5 @@
 from datetime import date
+from bson import ObjectId
 from pydantic import BaseModel, Field, field_validator
 
 from app.models.breeds import Breed
@@ -114,3 +115,10 @@ class AnimalResponse(BaseModel):
     description: str
     birth_date: date
     status: AnimalStatus
+
+    class Config:
+        populate_by_name = True
+        from_attributes = True
+        json_encoders = {
+            ObjectId: str
+        }

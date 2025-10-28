@@ -4,9 +4,11 @@ from bson.errors import InvalidId
 from app.schemas.animals import AnimalCreate
 from app.database import mongo_database_con
 
+ANIMALS_COLLECTION = mongo_database_con["animals"]
+
 async def insert_animal(animal_dto: AnimalCreate):
     try:
-        create_result = await mongo_database_con["animals"].insert_one(animal_dto.model_dump(mode='json'))
+        create_result = await ANIMALS_COLLECTION.insert_one(animal_dto.model_dump(mode='json'))
         return str(create_result.inserted_id)
     except Exception as e:
         print(f"Erro ao criar animal: {e}")
@@ -14,6 +16,9 @@ async def insert_animal(animal_dto: AnimalCreate):
     
 async def find_all_animals():
     pipeline = [
+        {
+            "$sort": {"_id": -1}
+        },
         {
             "$lookup": {
                 "from": "breeds",
@@ -31,7 +36,7 @@ async def find_all_animals():
             }
         }
     ]
-    animals = await mongo_database_con["animals"].aggregate(pipeline).to_list(length=None)
+    animals = await ANIMALS_COLLECTION.aggregate(pipeline).to_list(length=100)
     return animals
 
 
@@ -68,7 +73,7 @@ async def find_one_animal(animal_identifier: str):
             {"$limit": 1}
         ]
 
-        result = await mongo_database_con["animals"].aggregate(pipeline).to_list(length=1)
+        result = await ANIMALS_COLLECTION.aggregate(pipeline).to_list(length=1)
         return result[0] if result else None
 
     except Exception as e:

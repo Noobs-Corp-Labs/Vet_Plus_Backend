@@ -37,8 +37,8 @@ async def create_user(user: UserCreate):
         hashed_password=hashed_password,
         is_active=True,
         is_admin=False,
-        created_at=datetime.utcnow().isoformat(),
-        updated_at=datetime.utcnow().isoformat(),
+        created_at=datetime.now(datetime.timezone.utc).isoformat(),
+        updated_at=datetime.now(datetime.timezone.utc).isoformat(),
     )
     result = await mongo_database_con["users"].insert_one(user_doc.dict())
     user_doc.id = str(result.inserted_id)
@@ -49,7 +49,7 @@ async def update_user(user: UserUpdate) -> User | None:
     data = user.dict(exclude_unset=True, exclude={"id"})
     if "password" in data:
         data["hashed_password"] = get_password_hash(data.pop("password"))
-    data["updated_at"] = datetime.utcnow().isoformat()
+    data["updated_at"] = datetime.now(datetime.timezone.utc).isoformat()
     result = await mongo_database_con["users"].update_one(
         {"_id": ObjectId(user.id)},
         {"$set": data}
