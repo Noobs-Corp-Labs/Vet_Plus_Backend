@@ -17,6 +17,10 @@ class Settings(BaseSettings):
     mongodb_password: str
     mongodb_database: str
 
+    # Gemini
+    gemini_api_key: str
+    gemini_model: str
+
     class Config:
         env_file = ".env"
 

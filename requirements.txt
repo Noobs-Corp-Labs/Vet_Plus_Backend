@@ -7,3 +7,4 @@ httpx
 Motor
 python-jose
 passlib[bcrypt]
+google-genai

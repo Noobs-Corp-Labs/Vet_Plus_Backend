@@ -14,6 +14,8 @@ This `.env` file should contain the given variables:
 |MONGODB_USERNAME|Username to access database||
 |MONGODB_PASSWORD|Password to access database||
 |MONGODB_DATABASE|Database name|`exampledb`|
+|GEMINI_API_KEY|Api Key to access Gemini API||
+|GEMINI_MODEL|Gemini Model|`gemini-2.5-flash`|
 
 
 use pip to install dependencies
