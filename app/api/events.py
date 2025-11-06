@@ -107,7 +107,6 @@ async def get_events_by_animal_identifier(
 ):
     try:
         events = await find_by_animal_identifier(animal_identifier)
-        print(events)
         for event in events:
             event["_id"] = str(event["_id"])
 
