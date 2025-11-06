@@ -34,6 +34,7 @@ async def insert_event(event_dto: EventCreate):
 
 async def find_all_events():
     events = await EVENTS_COLLECTION.find().sort("event_date", -1).to_list(length=100)
+    
     return events
 
 async def find_one_event(event_identifier: str):
@@ -57,4 +58,18 @@ async def find_one_event(event_identifier: str):
         
     except Exception as e:
         print(f"Erro ao buscar evento: {e}")
+        return None
+    
+async def find_by_animal_identifier(animal_identifier: str):
+    """
+    Busca eventos por ID Animal
+    Args: animal_identifier: ID do animal
+    Returns: Lista de Eventos do animal
+    """
+    try:
+        events = await EVENTS_COLLECTION.find({"animal_id": animal_identifier}).sort("event_date", -1).to_list(length=100)
+        
+        return events
+    except Exception as e:
+        print(f"Erro ao buscar eventos: {e}")
         return None
