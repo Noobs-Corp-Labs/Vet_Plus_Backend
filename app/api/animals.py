@@ -71,9 +71,18 @@ async def get_one_animal(
         )
     ]
 ):
-    animal_obj = await find_one_animal(animal_identifier)
-    if not animal_obj:
-        raise HTTPException(status_code=404, detail='Animal not found')
-    animal_obj["_id"] = str(animal_obj["_id"])
-    animal_obj["breed"]["_id"] = str(animal_obj["breed"]["_id"])
-    return animal_obj
+    try:
+        animal_obj = await find_one_animal(animal_identifier)
+        if not animal_obj:
+            raise HTTPException(status_code=404, detail='Animal not found')
+        animal_obj["_id"] = str(animal_obj["_id"])
+        animal_obj["breed"]["_id"] = str(animal_obj["breed"]["_id"])
+        return animal_obj
+    except HTTPException:
+        raise
+    except Exception as e:
+        print(f"Erro ao buscar dados do animal: {e}")
+        raise HTTPException(
+            status_code=500,
+            detail="Erro interno ao buscar dados do animal."
+        )
