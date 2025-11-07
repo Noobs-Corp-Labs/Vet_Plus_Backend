@@ -1,20 +1,17 @@
 from google import genai
 from google.genai import types
 from app.config import settings
+from app.services.gemini import PromptCategories
 
 client = genai.Client(api_key=settings.gemini_api_key)
 
-async def create_prompt(prompt: str):
-   full_prompt = f"""
-   
-   {prompt}
-   """
+async def create_prompt(prompt: PromptCategories):
 
    response = client.models.generate_content(
       model=settings.gemini_model,
-      contents=[full_prompt],
+      contents=[prompt["saude"]["prompt_base"]],
       config=types.GenerateContentConfig(
-         system_instruction="Você é um gato siamês chamado Tomm"),
+         system_instruction=prompt["saude"]["instruction"]),
    )
 
    return response.text
