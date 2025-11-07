@@ -1,0 +1,51 @@
+name: Generate Vet Plus Client
+
+on:
+   push:
+      tags:
+         - '*.*.*'  # roda quando criar uma tag tipo v1.0.0
+   workflow_dispatch:
+
+jobs:
+   generate-client:
+      runs-on: ubuntu-latest
+
+      steps:
+      -  name: Checkout repository
+         uses: actions/checkout@v4
+
+      -  name: Set up Python
+         uses: actions/setup-python@v5
+         with:
+            python-version: '3.12'
+
+      -  name: Install backend dependencies
+         run: pip install -r requirements.txt
+
+      -  name: Run FastAPI server
+         run: nohup uvicorn app.main:app --host 0.0.0.0 --port 8000 & sleep 5
+
+      -  name: Download OpenAPI schema
+         run: curl -o openapi.json http://localhost:8000/openapi.json
+
+      -  name: Install OpenAPI Generator CLI
+         run: wget https://repo1.maven.org/maven2/org/openapitools/openapi-generator-cli/7.7.0/openapi-generator-cli-7.7.0.jar -O openapi-generator-cli.jar
+
+      -  name: Generate TypeScript client
+         run: java -jar openapi-generator-cli.jar generate \
+            -i openapi.json \
+            -g typescript-fetch \
+            -o clients/ts-client \
+            --additional-properties=supportsES6=true,withSeparateModelsAndApi=true,modelPropertyNaming=camelCase
+
+      -  name: Set package version
+         run: VERSION=${GITHUB_REF#refs/tags/}
+            jq --arg v "$VERSION" '.version=$v' ts-client/package.json > tmp.$$.json && mv tmp.$$.json ts-client/package.json
+
+      -  name: Configure npm for GitHub Packages
+         run: echo "//npm.pkg.github.com/:_authToken=${{ secrets.GITHUB_TOKEN }}" > ~/.npmrc
+            echo "@${{ github.repository_owner }}:registry=https://npm.pkg.github.com" >> ~/.npmrc
+
+      -  name: Publish to GitHub Packages
+         working-directory: ts-client
+         run: npm publish --access public
