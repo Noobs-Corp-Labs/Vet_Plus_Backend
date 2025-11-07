@@ -1,6 +1,7 @@
 from typing import Annotated
 from fastapi import APIRouter, HTTPException, Path,  status
 
+from app.utils.parsers import extrair_e_parsear_json
 from app.services.gemini import PromptFactory
 from app.crud.events import find_by_animal_identifier
 from app.crud.animals import find_one_animal
@@ -35,6 +36,7 @@ async def handle_prompt(
         prompt = prompt_factory.gerar_prompts()
 
         prompt_response_str = await create_prompt(prompt)
+        print("JSON", extrair_e_parsear_json(prompt_response_str))
         return PromptReturn(response=prompt_response_str)
 
     except HTTPException:
