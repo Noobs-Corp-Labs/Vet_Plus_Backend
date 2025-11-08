@@ -27,9 +27,9 @@ async def read_user(user_id: str):
     return user
 
 @router.put('/{user_id}', response_model=UserResponse)
-async def modify_user(user: UserUpdate):
+async def modify_user(user_id: str, user: UserUpdate):
     #DEV: Adicionar a func as validação de update de user infos
-    updated_user = await update_user(user)
+    updated_user = await update_user(user_id, user)
     if not updated_user:
         raise HTTPException(status_code=404, detail='User not found')
     return updated_user

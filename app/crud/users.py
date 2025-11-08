@@ -44,14 +44,14 @@ async def create_user(user: UserCreate):
     user_doc.id = str(result.inserted_id)
     return user_doc
 
-async def update_user(user: UserUpdate) -> User | None:
+async def update_user(user_id: str, user: UserUpdate) -> User | None:
     """Atualiza um usuário pelo _id"""
     data = user.dict(exclude_unset=True, exclude={"id"})
     if "password" in data:
         data["hashed_password"] = get_password_hash(data.pop("password"))
     data["updated_at"] = datetime.now(datetime.timezone.utc).isoformat()
     result = await mongo_database_con["users"].update_one(
-        {"_id": ObjectId(user.id)},
+        {"_id": ObjectId(user_id)},
         {"$set": data}
     )
     if result.matched_count == 0:
