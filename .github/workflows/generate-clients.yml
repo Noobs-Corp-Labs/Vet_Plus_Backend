@@ -27,7 +27,10 @@ jobs:
          run: pip install -r requirements.txt
 
       -  name: Run FastAPI server
-         run: nohup uvicorn app.main:app --host 0.0.0.0 --port 8000 & sleep 10 curl --retry 5 --retry-delay 2 --retry-connrefused http://localhost:8000/docs
+         run: |
+            nohup uvicorn app.main:app --host 0.0.0.0 --port 8000 &
+            sleep 10
+            curl --retry 5 --retry-delay 2 --retry-connrefused http://localhost:8000/docs
 
       -  name: Download OpenAPI schema
          run: curl -o openapi.json http://localhost:8000/openapi.json
@@ -40,16 +43,32 @@ jobs:
             output-dir: ts-client
             command-args: --additional-properties=supportsES6=true,withSeparateModelsAndApi=true,modelPropertyNaming=camelCase
 
+      -  name: Set package version based on Git Tag
+         run: |
+            VERSION=$(echo ${GITHUB_REF#refs/tags/} | sed 's/^v//')
+            jq --arg v "$VERSION" '.version=$v' ts-client/package.json > tmp.$$.json && mv tmp.$$.json ts-client/package.json
+
       -  name: Set up npm environment
          uses: actions/setup-node@v4
          with:
             node-version: '20'
             registry-url: 'https://npm.pkg.github.com'
 
-      -  name: Configure npm for GitHub Packages
-         run: echo "//npm.pkg.github.com/:_authToken=${{ secrets.GITHUB_TOKEN }}" > ~/.npmrc
-            echo "@${{ github.repository_owner }}:registry=https://npm.pkg.github.com" >> ~/.npmrc
-
-      -  name: Publish to GitHub Packages
+      -  name: Install, Pack, and Publish to GitHub Packages
          working-directory: ts-client
-         run: npm publish --access public
+         run: |
+            npm install
+            npm pack
+            npm publish --access public
+         env:
+            NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      
+      -  name: Upload Release Asset
+         uses: actions/upload-release-asset@v1
+         env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+         with:
+            upload_url: ${{ github.event.release.upload_url }}
+            asset_path: ./ts-client/*.tgz
+            asset_name: ${{ github.event.repository.name }}-ts-client-${{ github.ref_name }}.tgz
+            asset_content_type: application/gzip
