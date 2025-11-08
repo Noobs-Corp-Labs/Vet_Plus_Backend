@@ -3,8 +3,12 @@ name: Generate Vet Plus Client
 on:
    push:
       tags:
-         - '*.*.*'  # roda quando criar uma tag tipo v1.0.0
+         - '*.*.*'
    workflow_dispatch:
+
+permissions:
+   contents: write
+   packages: write
 
 jobs:
    generate-client:
@@ -23,13 +27,13 @@ jobs:
          run: pip install -r requirements.txt
 
       -  name: Run FastAPI server
-         run: nohup uvicorn app.main:app --host 0.0.0.0 --port 8000 & sleep 5
+         run: nohup uvicorn app.main:app --host 0.0.0.0 --port 8000 & sleep 10 curl --retry 5 --retry-delay 2 --retry-connrefused http://localhost:8000/docs
 
       -  name: Download OpenAPI schema
          run: curl -o openapi.json http://localhost:8000/openapi.json
 
-      -  name: Generate TypeScript client (typescript-fetch)
-         uses: openapi-generators/openapigenerator-action@v1
+      -  name: Generate TypeScript client
+         uses: openapi-generators/openapitools-generator-action@v1
          with:
             generator: typescript-fetch
             openapi-file: openapi.json
