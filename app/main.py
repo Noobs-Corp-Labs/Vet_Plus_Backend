@@ -3,7 +3,6 @@ from fastapi import FastAPI
 from app.core.database.database_init import init_collections
 from app.api import api_router
 from app.middleware import add_middlewares
-from app.config import settings
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -21,7 +20,7 @@ app = FastAPI(
     description="""
 API do **Vet Plus**, sistema para gestão, análise de saúde e produção de rebanhos leiteiros.
 """,
-    version="0.0.1",
+    version="1.0.0",
     docs_url="/docs",
     redoc_url="/redoc",
     openapi_url="/openapi.json",
