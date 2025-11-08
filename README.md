@@ -21,7 +21,7 @@ This `.env` file should contain the given variables:
 use pip to install dependencies
 
 ```bash
-pip install -r requirements.txt
+pip install -r requirements.txt; pre-commit install
 ```
 
 run the development server:
