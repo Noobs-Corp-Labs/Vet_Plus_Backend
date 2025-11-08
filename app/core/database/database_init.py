@@ -31,12 +31,12 @@ async def create_indexes(db, collection_name: str, indexes: list):
             # Formata a exibição dos índices
             keys_str = ", ".join([f"{k}: {v}" for k, v in keys])
             unique_str = " (unique)" if options.get("unique") else ""
-            print(f"  📇 Índice criado: {{{keys_str}}}{unique_str}")
+            print(f" [SUCCESS] Índice criado: {{{keys_str}}}{unique_str}")
             
         except Exception as e:
             # Ignora erro se índice já existir
             if "already exists" not in str(e).lower():
-                print(f"  ⚠️  Erro ao criar índice: {e}")
+                print(f" [ERROR] Erro ao criar índice: {e}")
 
 
 async def init_collections(run_command: bool = True):
@@ -49,7 +49,7 @@ async def init_collections(run_command: bool = True):
     3. Aplica validação JSON Schema (se possível)
     4. Cria índices definidos no Config
     """
-    print("🔄 Iniciando setup das collections MongoDB...")
+    print("[START] Iniciando setup das collections MongoDB...")
     if (run_command):
         from app import models
     
@@ -74,14 +74,14 @@ async def init_collections(run_command: bool = True):
                         
                         # Pega o nome da collection do Config
                         if not hasattr(obj.Config, "collection"):
-                            print(f"⚠️  Model {obj.__name__} não tem 'collection' definido no Config")
+                            print(f"[WARNING]  Model {obj.__name__} não tem 'collection' definido no Config")
                             continue
                         
                         collection_name = obj.Config.collection
                         
                         # Cria a collection se não existir
                         if collection_name not in existing_collections:
-                            print(f"🧱 Criando collection '{collection_name}'...")
+                            print(f"[INFO]Criando collection '{collection_name}'...")
                             await mongo_database_con.create_collection(collection_name)
                             collections_created += 1
                             
@@ -97,15 +97,15 @@ async def init_collections(run_command: bool = True):
                                     "validator": {"$jsonSchema": schema},
                                     "validationLevel": "moderate",
                                 })
-                                print(f"  ✅ Validação JSON Schema aplicada")
+                                print(f"  [SUCCESS] Validação JSON Schema aplicada")
                             except Exception as e:
-                                print(f"  ⚠️  Validação não aplicada: {e}")
+                                print(f"  [WARNING]  Validação não aplicada: {e}")
                             
                             # Cria índices se definidos
                             if hasattr(obj.Config, 'indexes'):
                                 await create_indexes(mongo_database_con, collection_name, obj.Config.indexes)
                         else:
-                            print(f"ℹ️  Collection '{collection_name}' já existe")
+                            print(f"[INFO]  Collection '{collection_name}' já existe")
                             collections_skipped += 1
                             
                             # Garante que os índices existam mesmo se a collection já existir
@@ -115,9 +115,9 @@ async def init_collections(run_command: bool = True):
             except Exception as e:
                 print(f"❌ Erro ao processar módulo '{module_name}': {e}")
         
-        print(f"\n✅ Setup concluído!")
+        print(f"\n[SUCCESS] Setup concluído!")
         print(f"   📦 {collections_created} collection(s) criada(s)")
-        print(f"   ℹ️  {collections_skipped} collection(s) já existia(m)\n")
+        print(f"   [INFO]  {collections_skipped} collection(s) já existia(m)\n")
     else:
-        print("ℹ️  Automatic Collection Update está desligado...")
-        print("✅ Setup concluído!")
+        print("[INFO]  Automatic Collection Update está desligado...")
+        print("[SUCCESS] Setup concluído!")

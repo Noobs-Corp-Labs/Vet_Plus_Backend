@@ -8,3 +8,5 @@ Motor
 python-jose
 passlib[bcrypt]
 google-genai
+pre-commit
+openapi-spec-validator

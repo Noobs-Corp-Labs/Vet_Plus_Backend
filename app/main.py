@@ -11,7 +11,7 @@ async def lifespan(app: FastAPI):
     Gerencia o ciclo de vida da aplicação.
     """
     # Startup
-    print("🚀 Iniciando aplicação...")
+    print("Iniciando aplicação...")
     await init_collections(False)
     
     yield
