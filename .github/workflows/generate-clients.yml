@@ -2,9 +2,9 @@ name: Generate Vet Plus Client
 
 on:
    push:
-   #    tags:
-   #       - '*.*.*'
-   # workflow_dispatch:
+      tags:
+         - '*.*.*'
+   workflow_dispatch:
 
 permissions:
    contents: write
