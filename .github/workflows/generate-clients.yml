@@ -46,7 +46,7 @@ jobs:
       -  name: Set package version based on Git Tag
          run: |
             VERSION=$(echo ${GITHUB_REF#refs/tags/} | sed 's/^v//')
-            jq --arg v "$VERSION" '.version=$v' ts-client/package.json > tmp.$$.json && mv tmp.$$.json ts-client/package.json
+            jq --arg v "$VERSION" '.version=$v' typescript-fetch-client/package.json > tmp.$$.json && mv tmp.$$.json ts-client/package.json
 
       -  name: Set up npm environment
          uses: actions/setup-node@v4
