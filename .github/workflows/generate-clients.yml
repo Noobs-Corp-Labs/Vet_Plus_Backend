@@ -84,7 +84,7 @@ jobs:
          with:
             generator: typescript-axios
             openapi-file: openapi.json
-            command-args: --additional-properties=npmName="noobs-corp-labs/vet-plus-backend",npmVersion="${{ env.VERSION }}",supportsES6=true
+            command-args: --additional-properties=npmName="@noobs-corp-labs/vet-plus-backend",npmVersion="${{ env.VERSION }}",supportsES6=true
 
       -  name: Set Up NPM Environment
          uses: actions/setup-node@v4
