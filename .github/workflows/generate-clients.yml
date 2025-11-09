@@ -101,7 +101,7 @@ jobs:
                ${{ runner.os }}-npm-
 
       -  name: Install, Pack, and Publish to GitHub Packages
-         working-directory: typescript-axios
+         working-directory: typescript-axios-client
          run: |
             npm install
             npm pack
@@ -113,7 +113,7 @@ jobs:
          uses: actions/upload-artifact@v4
          with:
             name: typescript-axios-package
-            path: typescript-axios/*.tgz
+            path: typescript-axios-client/*.tgz
       
    upload-release:
       runs-on: ubuntu-latest
