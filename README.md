@@ -30,9 +30,15 @@ run the development server:
 fastapi dev app/main.py
 ```
 
-The API will be available at [http://localhost:3000/](http://localhost:3000/).
+run in production server:
 
-> You can find the docs at [http://localhost:3000/docs](http://localhost:3000/docs)
+```bash
+fastapi run app/main.py
+```
+
+The API will be available at [http://localhost:3000/](http://localhost:8000/).
+
+> You can find the docs at [http://localhost:3000/docs](http://localhost:8000/docs)
 
 ## Learn More
 
