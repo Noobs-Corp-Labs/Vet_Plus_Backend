@@ -5,13 +5,14 @@ from app.services.gemini import PromptCategories
 
 client = genai.Client(api_key=settings.gemini_api_key)
 
-async def create_prompt(prompt: PromptCategories):
+async def create_prompt(instruction: str, prompt_base: str):
 
    response = client.models.generate_content(
       model=settings.gemini_model,
-      contents=[prompt["saude"]["prompt_base"]],
+      contents=[prompt_base],
       config=types.GenerateContentConfig(
-         system_instruction=prompt["saude"]["instruction"]),
+         system_instruction=instruction
+      ),
    )
 
    return response.text

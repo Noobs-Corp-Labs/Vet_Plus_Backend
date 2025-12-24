@@ -1,5 +1,7 @@
+from datetime import datetime
 import re
 import json
+from bson.objectid import ObjectId
 
 def extrair_e_parsear_json(response_str: str) -> dict | None:
     """
@@ -42,3 +44,14 @@ def extrair_e_parsear_json(response_str: str) -> dict | None:
         print(f"Erro: Não foi possível fazer o parse do JSON.")
         print(f"String que falhou: {json_string_candidata}")
         return None
+
+
+def custom_json_encoder(obj):
+    """Função para serializar tipos não-JSON padrão, como ObjectId."""
+    if isinstance(obj, ObjectId):
+        return str(obj)
+    
+    if isinstance(obj, datetime):
+        # Converte datetime para string no formato ISO 8601
+        return obj.isoformat()
+    raise TypeError(f"Object of type {type(obj).__name__} is not JSON serializable")
